@@ -8,7 +8,7 @@ use crate::utils::logger;
 use crate::network::ReadResult;
 use crate::network::BUFFER;
 
-const SIZE: usize = 8192;
+const BUF_SIZE: usize = 8192;
 
 pub struct Tunnel {
 
@@ -57,7 +57,7 @@ impl Tunnel {
     }
 
     async fn tcp_quic(&self, tcp_read : &mut OwnedReadHalf, quic_send : &mut SendStream) -> Result<ReadResult> {
-        let mut buf = BUFFER.alloc_and_fill(SIZE);
+        let mut buf = BUFFER.alloc_and_fill(BUF_SIZE);
         let len = tcp_read.read(&mut buf[..]).await?;
         if len > 0 {
             quic_send.write_all(&buf[..len]).await?;
@@ -68,7 +68,7 @@ impl Tunnel {
     }
 
     async fn quic_tcp(&self, quic_rec : &mut RecvStream, tcp_write : &mut OwnedWriteHalf) -> Result<ReadResult> {
-        let mut buf = BUFFER.alloc_and_fill(SIZE);
+        let mut buf = BUFFER.alloc_and_fill(BUF_SIZE);
         let res = quic_rec.read(&mut buf[..]).await?;
         if let Some(len) = res {
             tcp_write.write_all(&buf[..len]).await?;
