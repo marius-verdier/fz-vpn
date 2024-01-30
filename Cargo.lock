@@ -9,6 +9,7 @@ dependencies = [
  "anyhow",
  "byte-pool",
  "lazy_static",
+ "libc",
  "quinn",
  "tokio",
 ]

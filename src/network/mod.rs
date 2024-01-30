@@ -3,6 +3,8 @@ use byte_pool::BytePool;
 use quinn::{RecvStream, SendStream};
 
 pub mod tunnel;
+pub mod bridge;
+mod message;
 
 pub (crate) enum ReadResult {
     End,
